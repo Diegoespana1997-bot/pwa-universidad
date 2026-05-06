@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PWA Universitaria - Diego España</title>
+    
+    <!-- Vinculación al archivo manifest.json -->
+    <link rel="manifest" href="manifest.json">
+
+    <!-- ========================================================= -->
+    <!-- SECCIÓN: CSS (Diseño y Estructura) -->
+    <!-- ========================================================= -->
+    <style>
+        :root {
+            /* Ruta de la imagen de fondo personalizada */
+            --bg-image: url('[tu_foto.jpg]');
+            
+            /* Variables Tema Claro (Por defecto) */
+            --text-color: #333333;
+            --heading-color: #0056b3;
+            --subheading-color: #444444;
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --card-border: rgba(0, 0, 0, 0.1);
+            --overlay-bg: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.8));
+            --btn-bg: rgba(0, 86, 179, 0.1);
+            --btn-border: rgba(0, 86, 179, 0.3);
+            --btn-hover: #0056b3;
+            --btn-text: #0056b3;
+            --btn-hover-text: #ffffff;
+            --canvas-bg: rgba(255, 255, 255, 0.6);
+            --canvas-border: rgba(0, 0, 0, 0.2);
+            --canvas-text-1: #0056b3;
+            --canvas-text-2: #00a8ff;
+        }
+
+        /* Detectar preferencias de color del sistema operativo del usuario */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                /* Variables Tema Oscuro */
+                --text-color: #ffffff;
+                --heading-color: #4facfe;
+                --subheading-color: #a1c4fd;
+                --card-bg: rgba(255, 255, 255, 0.08);
+                --card-border: rgba(255, 255, 255, 0.15);
+                --overlay-bg: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.85));
+                --btn-bg: rgba(79, 172, 254, 0.2);
+                --btn-border: rgba(79, 172, 254, 0.4);
+                --btn-hover: #4facfe;
+                --btn-text: #ffffff;
+                --btn-hover-text: #000000;
+                --canvas-bg: rgba(0, 0, 0, 0.3);
+                --canvas-border: rgba(255, 255, 255, 0.3);
+                --canvas-text-1: #ffffff;
+                --canvas-text-2: #4facfe;
+            }
+        }
+
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-image: var(--bg-image);
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+            overflow-x: hidden;
+            transition: color 0.3s ease;
+        }
+
+        /* Superposición para legibilidad del contenido */
+        .overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: var(--overlay-bg);
+            backdrop-filter: blur(12px);
+            z-index: -1;
+            transition: background 0.3s ease;
+        }
+
+        /* Estructura en tres secciones visuales */
+        .main-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            width: 100%;
+            max-width: 650px;
+            z-index: 1;
+        }
+
+        .section-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            text-align: center;
+            transition: transform 0.3s ease, background 0.3s ease, border-color 0.3s ease;
+        }
+        
+        .section-card:hover {
+            transform: scale(1.02);
+            border-color: var(--heading-color);
+        }
+
+        h1 { font-size: 2rem; color: var(--heading-color); margin-bottom: 5px; transition: color 0.3s ease; }
+        h2 { font-size: 1.3rem; margin-bottom: 20px; color: var(--subheading-color); font-weight: 400; transition: color 0.3s ease; }
+
+        /* Botones */
+        .btn {
+            background: var(--btn-bg);
+            border: 1px solid var(--btn-border);
+            color: var(--btn-text);
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 8px;
+            transition: all 0.3s ease;
+            width: 85%;
+        }
+        
+        .btn:hover { 
+            background: var(--btn-hover);
+            box-shadow: 0 0 15px var(--btn-border);
+            color: var(--btn-hover-text);
+        }
+        
+        .btn-danger { background: rgba(255, 82, 82, 0.2); border-color: rgba(255, 82, 82, 0.4); width: auto; color: var(--text-color); }
+        .btn-danger:hover { background: #ff5252; color: white; }
+
+        /* Canvas */
+        canvas {
+            background: var(--canvas-bg);
+            border-radius: 12px;
+            border: 1px dashed var(--canvas-border);
+            margin: 15px 0;
+            max-width: 100%;
+            transition: background 0.3s ease, border-color 0.3s ease;
+        }
+
+        .logo-univ {
+            height: 35px;
+            margin-right: 10px;
+            vertical-align: middle;
+            border-radius: 50%;
+        }
+
+        @media (max-width: 480px) {
+            h1 { font-size: 1.6rem; }
+            .btn { width: 100%; }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="overlay"></div>
+
+    <div class="main-container">
+        
+        <!-- SECCIÓN UNO: Título y Web Speech API -->
+        <section class="section-card">
+            <h1 id="app-title">Proyecto Desarrollo Web PWA</h1>
+            <p>Sección de Interacción por Voz</p>
+            <button class="btn" style="width: auto;" onclick="reproducirVoz()">
+                🔊 Escuchar Título
+            </button>
+        </section>
+
+        <!-- SECCIÓN DOS: Enlaces Externos -->
+        <section class="section-card">
+            <h2>Recursos Externos</h2>
+            <div style="display: flex; flex-direction: column; align-items: center;">
+                <a href="https://diegoespana1997.wixsite.com/website" target="_blank" class="btn">
+                    🌐 Sitio Web Wix (Tarea 12)
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=RiYleQet7k4" target="_blank" class="btn">
+                    ▶️ Video YouTube (Tarea 11)
+                </a>
+                
+                <a href="https://www.galileo.edu/" target="_blank" class="btn">
+                    <img src="https://i.ibb.co/5h5jF51R/resize-Logo.jpg" alt="Logo Universidad" class="logo-univ" onerror="this.style.display='none'">
+                    Universidad Galileo
+                </a>
+            </div>
+        </section>
+
+        <!-- SECCIÓN TRES: Canvas y Salida -->
+        <section class="section-card">
+            <h2>Firma en Canvas</h2>
+            
+            <canvas id="canvasFirma" width="400" height="150"></canvas>
+            
+            <div>
+                <button class="btn btn-danger" onclick="cerrarApp()">
+                    Salir de la App
+                </button>
+            </div>
+        </section>
+        
+    </div>
+
+    <!-- =========================================================== -->
+    <!-- SECCIÓN: JavaScript (Lógica de la Aplicación) -->
+    <!-- =========================================================== -->
+    <script>
+        // 1. Web Speech API: Leer el título en voz alta
+        function reproducirVoz() {
+            const texto = document.getElementById('app-title').innerText;
+            if ('speechSynthesis' in window) {
+                const mensaje = new SpeechSynthesisUtterance(texto);
+                mensaje.lang = 'es-ES';
+                mensaje.rate = 1;
+                window.speechSynthesis.speak(mensaje);
+            }
+        }
+
+        // 2. Lógica para salir
+        function cerrarApp() {
+            if (confirm("¿Deseas cerrar la aplicación?")) {
+                window.close();
+                // Redirección de respaldo
+                setTimeout(() => { window.location.href = "about:blank"; }, 400);
+            }
+        }
+
+        // 3. Dibujo del Apellido "España" en Canvas
+        function dibujarCanvas() {
+            const canvas = document.getElementById('canvasFirma');
+            if (canvas && canvas.getContext) {
+                const ctx = canvas.getContext('2d');
+                const apellido = "España";
+
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                // Obtener colores dinámicos desde las variables CSS
+                const rootStyles = getComputedStyle(document.documentElement);
+                const color1 = rootStyles.getPropertyValue('--canvas-text-1').trim() || '#ffffff';
+                const color2 = rootStyles.getPropertyValue('--canvas-text-2').trim() || '#4facfe';
+                const shadowColor = rootStyles.getPropertyValue('--heading-color').trim() || '#4facfe';
+
+                // Estilo de fuente elegante
+                ctx.font = "bold 55px 'Segoe UI', sans-serif";
+                ctx.textAlign = "center";
+                ctx.textBaseline = "middle";
+
+                // Sombra de texto adaptable
+                ctx.shadowColor = shadowColor;
+                ctx.shadowBlur = 10;
+
+                // Gradiente dinámico (se adapta a tema claro u oscuro)
+                const gradiente = ctx.createLinearGradient(0, 0, canvas.width, 0);
+                gradiente.addColorStop(0, color1);
+                gradiente.addColorStop(1, color2);
+                
+                ctx.fillStyle = gradiente;
+                ctx.fillText(apellido, canvas.width / 2, canvas.height / 2);
+            }
+        }
+
+        // 4. Registro de Service Worker para PWA
+        function registrarPWA() {
+            if ('serviceWorker' in navigator) {
+                // Se utiliza la ruta estándar './sw.js'
+                navigator.serviceWorker.register('./sw.js')
+                .then(reg => console.log('Service Worker registrado.', reg))
+                .catch(err => console.log('Registro de SW omitido (ambiente local).'));
+            }
+        }
+
+        // Escuchar cambios de tema (Claro/Oscuro) en tiempo real para redibujar el canvas
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+            dibujarCanvas();
+        });
+
+        // Inicialización
+        window.onload = () => {
+            dibujarCanvas();
+            registrarPWA();
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+{
+  "name": "PWA Universitaria Diego España",
+  "short_name": "PWA España",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0056b3",
+  "icons": [
+    {
+      "src": "https://via.placeholder.com/192x192/0056b3/ffffff?text=E",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://via.placeholder.com/512x512/0056b3/ffffff?text=E",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
